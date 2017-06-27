@@ -2,7 +2,6 @@ import webbrowser
 import os
 import re
 
-
 # Styles and scripting for the page
 main_page_head = '''
 <!DOCTYPE html>
@@ -11,36 +10,10 @@ main_page_head = '''
     <meta charset="utf-8">
     <title>Fresh Tomatoes!</title>
 
-    <!-- Bootstrap 3 -->
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <style type="text/css" media="screen">
-        body {
-            padding-top: 80px;
-        }
-        #trailer .modal-dialog {
-            margin-top: 200px;
-            width: 640px;
-            height: 480px;
-        }
-        .hanging-close {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            z-index: 9001;
-        }
-        #trailer-video {
-            width: 100%;
-            height: 100%;
-        }
-        .movie-tile {
-            margin-bottom: 20px;
-            padding-top: 20px;
-        }
-        .movie-tile:hover {
-            background-color: #EEE;
+    <!-- Bulma -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css">
+    <style>
+        img:hover {
             cursor: pointer;
         }
         .scale-media {
@@ -55,14 +28,20 @@ main_page_head = '''
             left: 0;
             top: 0;
             background-color: white;
+        } 
+        #trailer-video {
+            width: 640px;
+            height: 100%;
         }
     </style>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         // Pause the video when the modal is closed
-        $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
+        $(document).on('click', '.modal-close', function (event) {
             // Remove the src so the player itself gets removed, as this is the only
             // reliable way to ensure the video stops playing in IE
             $("#trailer-video-container").empty();
+            $('#trailer').toggleClass('is-active');
         });
         // Start playing the video whenever the trailer modal is opened
         $(document).on('click', '.movie-tile', function (event) {
@@ -74,6 +53,7 @@ main_page_head = '''
               'src': sourceUrl,
               'frameborder': 0
             }));
+            $('#trailer').toggleClass('is-active');
         });
         // Animate in the movies when the page loads
         $(document).ready(function () {
@@ -81,6 +61,7 @@ main_page_head = '''
             $(this).next("div").show("fast", showNext);
           });
         });
+
     </script>
 </head>
 '''
@@ -90,42 +71,44 @@ main_page_head = '''
 main_page_content = '''
   <body>
     <!-- Trailer Video Modal -->
-    <div class="modal" id="trailer">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <a href="#" class="hanging-close" data-dismiss="modal" aria-hidden="true">
-            <img src="https://lh5.ggpht.com/v4-628SilF0HtHuHdu5EzxD7WRqOrrTIDi_MhEG6_qkNtUK5Wg7KPkofp_VJoF7RS2LhxwEFCO1ICHZlc-o_=s0#w=24&h=24"/>
-          </a>
-          <div class="scale-media" id="trailer-video-container">
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     <!-- Main Page Content -->
-    <div class="container">
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="nav has-shadow">
         <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
-          </div>
+            <div class="nav-left">
+                <a class="nav-item"><strong>FreshTomatoes</strong></a>
+                <a class="nav-item is-active">Home</a>
+            </div>
         </div>
-      </div>
+    </nav>
+    <div class="container" style="margin-top:32px;">
+        <div class="columns is-multiline">
+            {movie_tiles}
+        </div>
+      
     </div>
-    <div class="container">
-      {movie_tiles}
+    <div class="modal" id="trailer">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="scale-media" id="trailer-video-container">
+      </div>
+      <button class="modal-close"></button>
     </div>
   </body>
 </html>
 '''
-
+# <div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+#     <img src="{poster_image_url}" width="220" height="342">
+#     <h2>{movie_title}</h2>
+# </div>
 
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2>{movie_title}</h2>
-</div>
+    <div class="column is-one-quarter movie-tile" data-trailer-youtube-id="{trailer_youtube_id}">
+        <img src="{poster_image_url}" width="220" height="342">
+        <h2 class="subtitle">{movie_title}</h2>
+    </div>
 '''
 
 
