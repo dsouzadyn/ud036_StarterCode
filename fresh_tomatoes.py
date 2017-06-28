@@ -78,7 +78,6 @@ main_page_content = '''
         <div class="container">
             <div class="nav-left">
                 <a class="nav-item"><strong>FreshTomatoes</strong></a>
-                <a class="nav-item is-active">Home</a>
             </div>
         </div>
     </nav>
