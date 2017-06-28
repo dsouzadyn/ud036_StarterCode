@@ -11,5 +11,6 @@ $ git clone https://github.com/dsouzadyn/ud036_StarterCode
 
 ## Running the code
 ```sh
+$ cd ud036_StarterCode
 $ python main.py
 ```
