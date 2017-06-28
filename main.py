@@ -7,7 +7,10 @@ def main():
     print 'Fetching movies to serve...'
     mapi = MovieAPI(settings.API_KEY)
     movies = mapi.get_movies()
-    open_movies_page(movies)
+    if movies != None:
+        open_movies_page(movies)
+    else:
+        print 'Something went wrong with the API.'
 
 
 if __name__ == '__main__':
