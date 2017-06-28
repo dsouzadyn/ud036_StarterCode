@@ -11,7 +11,6 @@ $ git clone https://github.com/dsouzadyn/ud036_StarterCode
 
 ## Running the code
 
-Make sure your inside the code directory.
 ```sh
 $ cd ud036_StarterCode
 $ pip install requests
